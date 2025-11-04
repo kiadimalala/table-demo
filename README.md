@@ -1,9 +1,3 @@
-# Next.js Clean Architecture Setup
-
-A template for those who want to start with Clean architecture and Atomic Design setup with Next.js. 
-
-### PS: Clean Architecture isn't about folder structure, learn and adopt only if you're familiar with the concept
-
 ## Folder Structure
 
 The project is organized as follows:
