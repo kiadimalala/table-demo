@@ -1,33 +1,28 @@
-import { UserController } from "@/core/application/controllers/auth/user.controller";
-import { UserUseCase } from "@/core/application/use-cases/user/user.use-case";
-import { IUserRepository } from "@/core/application/interfaces/repository/user-repo.interface";
-import { IAuthService } from "@/core/application/interfaces/service/auth-service.interface";
+import { IDeclarationRepository } from "@/core/application/interfaces/repository/declaration-repo.interface";
+import { DeclarationUseCase } from "@/core/application/use-cases/user/declartion.use-case";
+import { DeclarationController } from "@/core/application/controllers/auth/user.controller";
 
 export const SYMBOLS = {
-    // repository
-    IUserRepository: Symbol.for('IUserRepository'),
+  // repository
+  IDeclarationRepository: Symbol.for("IDeclarationRepository"),
 
-    // services
-    IAuthService: Symbol.for('IAuthService'),
+  // services
+  IAuthService: Symbol.for("IAuthService"),
 
-    // use cases
-    UserUseCase: Symbol.for('UserUseCase'),
+  // use cases
+  DeclarationUseCase: Symbol.for("DeclarationUseCase"),
 
-    // controllers
-    UserController: Symbol.for('UserController'),
+  // controllers
+  DeclarationController: Symbol.for("DeclarationController"),
 };
 
-
 export type DI_TYPES = {
-    // repository
-    IUserRepository: IUserRepository,
+  // repository
+  IDeclarationRepository: IDeclarationRepository;
 
-    // services
-    IAuthService: IAuthService,
+  // use cases
+  DeclarationUseCase: DeclarationUseCase;
 
-    // use cases
-    UserUseCase: UserUseCase,
-
-    // controllers
-    UserController: UserController,
-}
+  // controllers
+  DeclarationController: DeclarationController;
+};
