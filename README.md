@@ -60,4 +60,4 @@ Run build
 
 I'm Next.js developper enthousiast, I like to share litle things i know about React and Next.js.
 
-Keep in touch with me: [Mail](mailto:contact@riv0manana.dev), [LinkedIn](https://www.linkedin.com/in/riv0manana/), [Website](https://riv0manana.dev)
+Keep in touch with me: [Mail](mailto:kiady.rj@gmail.com), [LinkedIn](https://www.linkedin.com/in/kiadimalala-rojoniaina-482910236/)
