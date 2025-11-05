@@ -1,0 +1,20 @@
+{
+  "Common": {
+    "loading": {
+      "loading": "Chargement...",
+      "loadingData": "Chargement des données..."
+    }
+  },
+  "Public": {
+    "Home": {
+      "pageTitle": "Demo | Table",
+      "pageDescription": ""
+    }
+  },
+  "components": {
+    "atoms": {},
+    "molecules": {},
+    "organisms": "",
+    "connected": {}
+  }
+}
