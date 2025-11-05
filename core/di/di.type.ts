@@ -1,6 +1,6 @@
 import { IDeclarationRepository } from "@/core/application/interfaces/repository/declaration-repo.interface";
-import { DeclarationUseCase } from "@/core/application/use-cases/user/declartion.use-case";
-import { DeclarationController } from "@/core/application/controllers/auth/user.controller";
+import { DeclarationUseCase } from "@/core/application/use-cases/declaration/declaration.use-case";
+import { DeclarationController } from "@/core/application/controllers/declaration/declaration.controller";
 
 export const SYMBOLS = {
   // repository

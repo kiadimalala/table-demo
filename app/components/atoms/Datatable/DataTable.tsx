@@ -10,17 +10,11 @@ import {
   Column,
 } from "@tanstack/react-table";
 import { RowSelectionState } from "@tanstack/react-table";
-import {
-  ArrowUpIcon,
-  ArrowDownIcon,
-  ArrowUpDownIcon,
-  FilterIcon,
-} from "lucide-react";
+import { ArrowUpIcon, ArrowDownIcon, ArrowUpDownIcon } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 //import { useTranslations } from "next-intl";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, useTransition } from "react";
 
-import { Button } from "@/app/components/ui/button";
 import {
   Table,
   TableBody,
@@ -44,7 +38,7 @@ interface DataTableProps<TData, TValue, TMeta> {
   meta?: TMeta;
   pagination?: Pagination;
   totalFilter?: number;
-  //fetchManagers?: (query?: FetchQuery) => Promise<ActionResponse<UserModel[]>>;
+  totalCount?: number;
 }
 
 function DataTable<TData, TValue, TMeta>({
@@ -52,9 +46,10 @@ function DataTable<TData, TValue, TMeta>({
   data = [],
   meta,
   pagination,
-  totalFilter,
-}: //fetchManagers,
-DataTableProps<TData, TValue, TMeta>) {
+  // totalFilter,
+  totalCount,
+}: DataTableProps<TData, TValue, TMeta>) {
+  const [pending, run] = useTransition();
   const [sorting, setSorting] = useState<SortingState>([]);
   const [isInitialized, setIsInitialized] = useState(false);
   const searchParams = useSearchParams();
@@ -62,7 +57,7 @@ DataTableProps<TData, TValue, TMeta>) {
 
   const t = useTranslations("Common.loading");
 
-  const DEFAULT_PAGE_SIZE = 100;
+  const DEFAULT_PAGE_SIZE = 25;
 
   const pageParam = searchParams.get("page");
   const pageSizeParam = searchParams.get("pageSize");
@@ -107,6 +102,8 @@ DataTableProps<TData, TValue, TMeta>) {
     columns,
     getCoreRowModel: getCoreRowModel(),
     manualSorting: true,
+    manualPagination: true,
+    pageCount: pagination?.total ? Math.ceil(pagination.total / pageSize) : -1, // -1 means unknown
     state: {
       sorting,
       rowSelection,
@@ -145,7 +142,9 @@ DataTableProps<TData, TValue, TMeta>) {
       params.set("page", String(newPageIndex + 1));
       params.set("pageSize", String(newPageSize));
 
-      router.replace(`?${params.toString()}`, { scroll: false });
+      run(() => {
+        router.push(`?${params.toString()}`, { scroll: false });
+      });
     },
     [searchParams, router]
   );
@@ -192,7 +191,7 @@ DataTableProps<TData, TValue, TMeta>) {
   const hasPrevPage = pageIndex > 0;
   const currentPage = pageIndex + 1;
 
-  if (!isInitialized) {
+  if (!isInitialized || pending) {
     return (
       <div className="rounded-md border">
         <Table>
@@ -247,7 +246,7 @@ DataTableProps<TData, TValue, TMeta>) {
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className="min-h-10">
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
@@ -279,6 +278,7 @@ DataTableProps<TData, TValue, TMeta>) {
       </div>
       <PaginationComponents
         dataCount={totalRows}
+        totalCount={totalCount as number}
         currentPage={currentPage}
         hasNextPage={hasNextPage}
         hasPrevPage={hasPrevPage}

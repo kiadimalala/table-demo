@@ -6,10 +6,11 @@ import {
 import { fromJSDateToISO } from "@/shared/date";
 import { IDeclarationRepository } from "@/core/application/interfaces/repository/declaration-repo.interface";
 import { getDeclarationQuery } from "./declaration.query";
-import { and, SQL } from "drizzle-orm";
+import { and, count, SQL } from "drizzle-orm";
 import { mapFilterToExpr } from "../utils";
+import { db } from "../../external/drizzle/database";
 
-const defaultPagesize = 14;
+const defaultPagesize = 25;
 
 export function parseDeclarationFrom(
   declaration: SelectDeclaration & Pick<DeclarationModel, "accountants">
@@ -18,8 +19,8 @@ export function parseDeclarationFrom(
     id: declaration.id,
     companyName: declaration.companyName,
     accountants: declaration.accountants,
-    closingDate: fromJSDateToISO(declaration.closingDate),
-    internalDeadline: fromJSDateToISO(declaration.internalDeadLine),
+    closingDate: fromJSDateToISO(declaration.closingDate as Date),
+    internalDeadline: fromJSDateToISO(declaration.internalDeadLine as Date),
     status: declaration.status as DeclarationModel["status"],
     reportStatus: declaration.reportStatus as DeclarationModel["reportStatus"],
     ecValidation: declaration.ecValidation as DeclarationModel["ecValidation"],
@@ -40,7 +41,7 @@ export class DeclarationRepositoryImpl implements IDeclarationRepository {
   getMany: IDeclarationRepository["getMany"] = async (queries) => {
     const columnMap: Record<keyof DeclarationModel, unknown> = {
       id: declarationTable.id,
-      accountants: undefined, // Placeholder, handled separately in query
+      accountants: undefined,
       closingDate: declarationTable.closingDate,
       internalDeadline: declarationTable.internalDeadLine,
       status: declarationTable.status,
@@ -82,12 +83,27 @@ export class DeclarationRepositoryImpl implements IDeclarationRepository {
         ((queries?.page || 1) - 1) * (queries?.pageSize || defaultPagesize)
       );
 
-    return (declarations || []).map((dec) =>
-      parseDeclarationFrom({
-        ...dec.declarationTable,
-        accountants:
-          dec.accoutants as unknown as DeclarationModel["accountants"],
-      })
-    );
+    const hasMore =
+      declarations.length > (queries?.pageSize ?? defaultPagesize);
+    const data = declarations.slice(0, queries?.pageSize || defaultPagesize);
+
+    return {
+      hasMore,
+      data: (data || []).map((dec) =>
+        parseDeclarationFrom({
+          ...dec.declarationTable,
+          accountants:
+            dec.accoutants as unknown as DeclarationModel["accountants"],
+        })
+      ),
+    };
+  };
+
+  getTotalCount: IDeclarationRepository["getTotalCount"] = async (
+    queries?: FetchQuery<DeclarationModel>
+  ) => {
+    const c = await db.select({ count: count() }).from(declarationTable);
+
+    return c[0].count;
   };
 }

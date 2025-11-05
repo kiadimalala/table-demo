@@ -55,7 +55,7 @@ export const DeclarationColumns: ColumnDef<DeclarationModel>[] = [
     accessorKey: "accoutants",
     header: "Comptable",
     cell: ({ row: { original } }) => (
-      <div className="*:data-[slot=avatar]:ring-background flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale">
+      <div className="*:data-[slot=avatar]:ring-background  flex -space-x-2 *:data-[slot=avatar]:ring-2 *:data-[slot=avatar]:grayscale">
         {original.accountants.map((ac) => {
           // Safely create initials from fullname, handle all possibilities
           let fallback: string;
@@ -80,7 +80,7 @@ export const DeclarationColumns: ColumnDef<DeclarationModel>[] = [
           }
 
           return (
-            <Avatar className="w-8 h-8" key={ac.id}>
+            <Avatar className="w-8 h-8 ring-white ring-1" key={ac.id}>
               <AvatarFallback
                 className="font-semibold !text-primary-foreground"
                 style={{

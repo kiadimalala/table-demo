@@ -1,25 +1,24 @@
 import ConnectedDeclarationTable from "@/app/components/connected/ConnectedDeclarationTable/ConnectedDeclarationTable";
-
 import { Badge } from "@/app/components/ui/badge";
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
 import { ChevronDown, Search } from "lucide-react";
-import React, { useMemo } from "react";
+import React from "react";
 
-const HomePage = () => {
-  const stats = useMemo(
-    () => ({
-      toBeConfigured: 5,
-      toDeclare: 2,
-      inProgress: 14,
-      acceptedAwaitingPayment: 8,
-      acceptedAndPaid: 32,
-      late: 1,
-      declarationRefused: 0,
-      paymentRefused: 0,
-    }),
-    []
-  );
+const HomePage = async ({ searchParams }: RouteQuery) => {
+  const { page, pageSize } = await searchParams;
+
+  const stats = () => ({
+    toBeConfigured: 5,
+    toDeclare: 2,
+    inProgress: 14,
+    acceptedAwaitingPayment: 8,
+    acceptedAndPaid: 32,
+    late: 1,
+    declarationRefused: 0,
+    paymentRefused: 0,
+  });
+
   return (
     <main className="h-screen w-full flex flex-col gap-6 p-6">
       <div className="">
@@ -126,7 +125,7 @@ const HomePage = () => {
         </div>
       </div>
       <section>
-        <ConnectedDeclarationTable />
+        <ConnectedDeclarationTable page={page as number} pageSize={pageSize} />
       </section>
     </main>
   );

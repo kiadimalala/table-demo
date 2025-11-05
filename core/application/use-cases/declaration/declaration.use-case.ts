@@ -10,4 +10,10 @@ export class DeclarationUseCase {
   getDeclarationList: IDeclarationRepository["getMany"] = async (queries) => {
     return this._declarationRepo.getMany(queries);
   };
+
+  getDeclarationCount: IDeclarationRepository["getTotalCount"] = async (
+    queries
+  ) => {
+    return this._declarationRepo.getTotalCount(queries);
+  };
 }

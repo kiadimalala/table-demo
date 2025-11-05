@@ -24,3 +24,15 @@ export const getDeclarationList = unstable_cache(
   undefined,
   { tags: ["declarations"] }
 );
+
+export const getDeclarationCount = async (
+  queries?: FetchQuery<DeclarationModel>
+) => {
+  try {
+    const count = await declarationController.getDeclarationCount(queries);
+
+    return mapActionResponse(count);
+  } catch (error) {
+    handleActionError(error as Error);
+  }
+};
