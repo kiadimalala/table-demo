@@ -6,7 +6,7 @@ import {
 import { fromJSDateToISO } from "@/shared/date";
 import { IDeclarationRepository } from "@/core/application/interfaces/repository/declaration-repo.interface";
 import { getDeclarationQuery } from "./declaration.query";
-import { and, count, ilike, like, SQL } from "drizzle-orm";
+import { and, asc, count, desc, ilike, like, SQL } from "drizzle-orm";
 import { mapFilterToExpr } from "../utils";
 import { db } from "../../external/drizzle/database";
 
@@ -92,8 +92,21 @@ export class DeclarationRepositoryImpl implements IDeclarationRepository {
 
     const whereCondition = conditions.length ? and(...conditions) : undefined;
 
-    const declarations = await dbQuery
-      .where(whereCondition)
+    let queryWithConditions = dbQuery.where(whereCondition);
+
+    if (queries?.orderBy) {
+      const orderByColumn =
+        columnMap[queries?.orderBy as keyof DeclarationModel];
+
+      if (orderByColumn) {
+        const sortDirection = queries.order === "desc" ? desc : asc;
+        queryWithConditions = queryWithConditions.orderBy(
+          sortDirection(orderByColumn as SQL<unknown>)
+        ) as typeof queryWithConditions;
+      }
+    }
+
+    const declarations = await queryWithConditions
       .limit((queries?.pageSize || defaultPagesize) + 1)
       .offset(
         ((queries?.page || 1) - 1) * (queries?.pageSize || defaultPagesize)

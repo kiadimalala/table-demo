@@ -17,6 +17,8 @@ const ConnectedDeclarationTable = async ({
     page: searchParams?.page ? Number(searchParams.page) : 1,
     pageSize: searchParams?.pageSize ? Number(searchParams.pageSize) : 25,
     filters: { ...searchParams?.filters, search: searchParams?.search },
+    orderBy: searchParams?.orderBy,
+    order: searchParams?.order,
   };
 
   const [, declarations] = await getDeclarationList(

@@ -5,6 +5,7 @@ import { ListFilter, Search } from "lucide-react";
 import { Input } from "../../ui/input";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useRouter, useSearchParams } from "next/navigation";
+import { SortButtons } from "../SortButton/SortButton";
 
 const SearchBar = () => {
   const searchParams = useSearchParams();
@@ -35,20 +36,7 @@ const SearchBar = () => {
           onChange={(e) => setQuery(e.target.value)}
         />
       </div>
-      <div className="col-span-6 flex items-center gap-4">
-        <Button variant="outline" className="gap-2 py-2 text-sm">
-          <ListFilter size={16} /> Forme
-        </Button>
-        <Button variant="outline" className="gap-2">
-          <ListFilter size={16} /> Comptable
-        </Button>
-        <Button variant="outline" className="gap-2">
-          <ListFilter size={16} /> Fréquence
-        </Button>
-        <Button variant="outline" className="gap-2">
-          <ListFilter size={16} /> Échéance
-        </Button>
-      </div>
+      <SortButtons />
       <div className="ml-auto flex items-center gap-2 col-span-2">
         <span className="text-sm text-gray-600">Mode analytique</span>
         <div className="w-10 h-6 bg-gray-300 rounded-full relative cursor-pointer">

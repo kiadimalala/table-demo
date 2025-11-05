@@ -5,7 +5,8 @@ import { Button } from "@/app/components/ui/button";
 import React from "react";
 
 const HomePage = async ({ searchParams }: RouteQuery) => {
-  const { page, pageSize, filters, search } = await searchParams;
+  const { page, pageSize, filters, search, order, orderBy } =
+    await searchParams;
 
   return (
     <main className="h-screen w-full flex flex-col gap-6 p-6">
@@ -41,6 +42,8 @@ const HomePage = async ({ searchParams }: RouteQuery) => {
             pageSize,
             filters,
             search,
+            order,
+            orderBy,
           }}
         />
       </section>
