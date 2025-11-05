@@ -7,7 +7,26 @@ export const DeclarationStatus = [
   "Accepted",
   "Rejected",
 ] as const;
+
+export const DeclarationStatusLabels: Record<
+  (typeof DeclarationStatus)[number],
+  string
+> = {
+  ToDo: "À faire",
+  ToDeclare: "À déclarer",
+  Accepted: "Validé",
+  Rejected: "Rejeté",
+};
+
 export const ReportStatus = ["Open", "Validated", "Finalized", "ToDo"] as const;
+
+export const ReportStatusLabels: Record<(typeof ReportStatus)[number], string> =
+  {
+    Open: "Ouvert",
+    Validated: "Validé",
+    Finalized: "Finalisé",
+    ToDo: "À faire",
+  };
 export const LegalForm = ["SAS", "SARL", "SA", "SCI"] as const;
 
 export const DeclarationSchema = z.object({
