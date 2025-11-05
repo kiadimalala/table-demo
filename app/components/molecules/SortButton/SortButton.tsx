@@ -1,6 +1,6 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/app/components/ui/button";
-import { ListFilter, ArrowUpDown, ArrowUp, ArrowDown } from "lucide-react";
+import { ListFilter, ArrowUp, ArrowDown } from "lucide-react";
 
 type SortField =
   | "legalForm"

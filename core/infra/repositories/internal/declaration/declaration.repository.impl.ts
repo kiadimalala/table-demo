@@ -6,7 +6,7 @@ import {
 import { fromJSDateToISO } from "@/shared/date";
 import { IDeclarationRepository } from "@/core/application/interfaces/repository/declaration-repo.interface";
 import { getDeclarationQuery } from "./declaration.query";
-import { and, asc, count, desc, ilike, like, SQL } from "drizzle-orm";
+import { and, asc, count, desc, ilike, SQL } from "drizzle-orm";
 import { mapFilterToExpr } from "../utils";
 import { db } from "../../external/drizzle/database";
 

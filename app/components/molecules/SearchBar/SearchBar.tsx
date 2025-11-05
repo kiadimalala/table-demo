@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Button } from "../../ui/button";
-import { ListFilter, Search } from "lucide-react";
-import { Input } from "../../ui/input";
+
+import { Input } from "@/app/components/ui/input";
 import { useDebounce } from "@/hooks/useDebounce";
 import { useRouter, useSearchParams } from "next/navigation";
-import { SortButtons } from "../SortButton/SortButton";
+import { SortButtons } from "@/app/components/molecules/SortButton/SortButton";
+import { Search } from "lucide-react";
 
 const SearchBar = () => {
   const searchParams = useSearchParams();
