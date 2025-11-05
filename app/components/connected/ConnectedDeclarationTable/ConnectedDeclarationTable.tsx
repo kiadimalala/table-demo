@@ -7,26 +7,31 @@ import DeclarationTable from "@/app/components/molecules/tables/DeclarationTable
 import { DeclarationModel } from "@/core/domain/models/declaration.model";
 
 export type ConnectedDeclarationTableProps = {
-  page?: number;
-  pageSize?: number;
+  searchParams?: RouteQuery["searchParams"];
 };
 
 const ConnectedDeclarationTable = async ({
-  page,
-  pageSize,
+  searchParams,
 }: ConnectedDeclarationTableProps) => {
-  const [, declarations] = await getDeclarationList({
-    page,
-    pageSize,
-  } as FetchQuery<DeclarationModel>);
+  const query = {
+    page: searchParams?.page ? Number(searchParams.page) : 1,
+    pageSize: searchParams?.pageSize ? Number(searchParams.pageSize) : 25,
+    filters: { ...searchParams?.filters, search: searchParams?.search },
+  };
+
+  const [, declarations] = await getDeclarationList(
+    query as FetchQuery<DeclarationModel>
+  );
 
   const { data, hasMore } = declarations!;
 
   const [, count] = await getDeclarationCount();
 
+  const pageCount = searchParams?.search ? data.length : count;
+
   return (
     <DeclarationTable
-      totalCount={count as number}
+      totalCount={pageCount as number}
       hasMore={hasMore}
       data={data || []}
     />

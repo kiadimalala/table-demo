@@ -124,9 +124,7 @@ export const DeclarationColumns: ColumnDef<DeclarationModel>[] = [
   {
     accessorKey: "ec_validation",
     header: "Validation EC",
-    cell: ({ row: { original } }) => (
-      <span>{getStatusBadge(original.ecValidation)}</span>
-    ),
+    cell: ({ row: { original } }) => <span>{"-"}</span>,
   },
   {
     accessorKey: "financial_statement",

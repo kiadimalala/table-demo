@@ -6,7 +6,7 @@ import {
 import { fromJSDateToISO } from "@/shared/date";
 import { IDeclarationRepository } from "@/core/application/interfaces/repository/declaration-repo.interface";
 import { getDeclarationQuery } from "./declaration.query";
-import { and, count, SQL } from "drizzle-orm";
+import { and, count, ilike, like, SQL } from "drizzle-orm";
 import { mapFilterToExpr } from "../utils";
 import { db } from "../../external/drizzle/database";
 
@@ -62,22 +62,38 @@ export class DeclarationRepositoryImpl implements IDeclarationRepository {
     const conditions: SQL[] = [];
 
     const filters = queries?.filters ?? {};
+
     for (const key in filters) {
-      if (["search", "query", "organisationId"].includes(key)) continue;
+      if (["search", "query"].includes(key)) continue;
 
       const column = columnMap[key as keyof DeclarationModel];
 
       const filterArray = filters[
         key as keyof DeclarationModel
       ] as unknown as ModuleFilter[];
+
       filterArray?.forEach((filter) => {
         const expr = mapFilterToExpr(column as SQL<unknown>, filter);
         if (expr) conditions.push(expr);
       });
     }
 
+    if (filters.search) {
+      const searchValue = String(filters.search).trim();
+
+      if (searchValue !== "") {
+        const searchCondition = ilike(
+          declarationTable.companyName,
+          `%${searchValue}%`
+        );
+        conditions.push(searchCondition);
+      }
+    }
+
+    const whereCondition = conditions.length ? and(...conditions) : undefined;
+
     const declarations = await dbQuery
-      .where(and(...conditions))
+      .where(whereCondition)
       .limit((queries?.pageSize || defaultPagesize) + 1)
       .offset(
         ((queries?.page || 1) - 1) * (queries?.pageSize || defaultPagesize)

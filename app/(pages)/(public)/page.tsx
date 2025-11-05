@@ -5,7 +5,7 @@ import { Button } from "@/app/components/ui/button";
 import React from "react";
 
 const HomePage = async ({ searchParams }: RouteQuery) => {
-  const { page, pageSize } = await searchParams;
+  const { page, pageSize, filters, search } = await searchParams;
 
   return (
     <main className="h-screen w-full flex flex-col gap-6 p-6">
@@ -35,7 +35,14 @@ const HomePage = async ({ searchParams }: RouteQuery) => {
         </div>
       </div>
       <section>
-        <ConnectedDeclarationTable page={page as number} pageSize={pageSize} />
+        <ConnectedDeclarationTable
+          searchParams={{
+            page,
+            pageSize,
+            filters,
+            search,
+          }}
+        />
       </section>
     </main>
   );
